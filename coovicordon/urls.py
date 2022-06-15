@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from movements import views as movement_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('upload-payment/', movement_views.PaymentUploadView.as_view(template_name='upload_payment.html')),
 ]
