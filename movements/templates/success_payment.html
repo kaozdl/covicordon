@@ -1,0 +1,59 @@
+<head>
+</head>
+<body class="box">
+  <div class="header">
+    <h1>Pago subido exitosamente</h1>
+  </div>
+  <div class="background">
+    <div class="form-container box">
+      <form enctype="multipart/form-data" method="post" action="">
+        <div class="box">
+          <span>Fecha del depósito:</span><br/>
+            {{ payment.deposited_at }}<br/>
+            <span>Descargar comprobante </span><a href="{{payment.attachment.url}}">aquí</a><br/>
+          <span>Socio:</span><br/>
+          {{ payment.member.first_name }} {{ payment.member.first_surname }}<br/>
+          <span>Monto:</span><br/>
+            {{ payment.ammount }}<br/>
+          <span>Num referencia:</span><br/>
+            {{ payment.reference }}<br/>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+<style>
+  .header {
+    text-align: center;
+    background-color: skyblue;
+    border-radius: 8px;
+    width: 60%;
+    margin: 10px;
+  }
+
+  .background-error {
+    background-color: pink;
+    border-radius: 8px;
+    width: 60%;
+    align-self: center;
+  }
+
+  .background {
+    background-color: skyblue;
+    border-radius: 8px;
+    width: 60%;
+    align-self: center;
+  }
+
+  .form-container {
+    width: 90%;
+  }
+
+  .box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+</style>

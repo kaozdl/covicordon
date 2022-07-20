@@ -1,3 +1,10 @@
 from django.shortcuts import render
 
-# Create your views here.
+
+def member_status(request, member_id):
+    pass
+
+
+def member_payments(request, member_id):
+    pass
+

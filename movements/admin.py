@@ -12,9 +12,12 @@ class PaymentAdmin(admin.ModelAdmin):
         'verified',
         'member',
         'attachment',
+        'reference',
+        'notes',
+        'ammount',
     )
 
-    list_display = ('member', 'created_at', 'deposited_at', 'verified')
+    list_display = ('member', 'created_at', 'deposited_at', 'verified', 'reference')
     readonly_fields = ('created_at',)
 
     class Meta:

@@ -1,5 +1,77 @@
-<form action="" method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <input type="submit" value="Subir pago" />
-</form>
+<head>
+</head>
+<body class="box">
+  <div class="header">
+    <h1>Subir Pago</h1>
+  </div>
+  <div class="background">
+    <div class="form-container box">
+      <form enctype="multipart/form-data" method="post" action="">
+        {% csrf_token %}
+        <div class="box">
+          <label>Fecha del depósito:</label>
+            {{ form.deposited_at }}
+          <label>Comprobante:</label>
+            {{ form.attachment }}
+          <label>Socio:</label>
+            {{ form.member }}
+          <label>Monto:</label>
+            {{ form.ammount }}
+          <label>Num referencia:</label>
+            {{ form.reference }}
+          <input type="submit" value="Subir pago" />
+        </div>
+      </form>
+    </div>
+    {% if form.non_field_errors %}
+    <div class="box background-error">
+      <span>{{ form.non_field_errors }}</span>
+    <div>
+    {% endif %}
+    {% if form.errors %}
+    <div class="box background-error">
+      {% for field in form %}
+      <span>{{ field.label }}</span>
+        {% for error in field.errors %}
+          <span>{{ error }}</span>
+        {% endfor %}
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</body>
+<style>
+  .header {
+    text-align: center;
+    background-color: skyblue;
+    border-radius: 8px;
+    width: 60%;
+    margin: 10px;
+  }
+
+  .background-error {
+    background-color: pink;
+    border-radius: 8px;
+    width: 60%;
+    align-self: center;
+  }
+
+  .background {
+    background-color: skyblue;
+    border-radius: 8px;
+    width: 60%;
+    align-self: center;
+  }
+
+  .form-container {
+    width: 90%;
+  }
+
+  .box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+</style>
