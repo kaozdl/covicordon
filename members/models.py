@@ -2,26 +2,28 @@ from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.translation import gettext_lazy as _
 
+from simple_history.models import HistoricalRecords
+
 # Create your models here.
 class Member(models.Model):
 
     first_name = models.CharField(
         max_length=128,
-        verbose_name=_('first_name'),
+        verbose_name='primer nombre',
     )
     second_name = models.CharField(
         max_length=128,
         blank=True,
         null=True,
-        verbose_name=_('second_name'),
+        verbose_name='segundo nombre',
     )
     first_surname = models.CharField(
         max_length=128,
-        verbose_name=_('first_surname'),
+        verbose_name='primer apellido',
     )
     second_surname = models.CharField(
         max_length=128,
-        verbose_name=_('second_surname'),
+        verbose_name='segundo apellido',
     )
     titular = models.BooleanField(default=False)
 
@@ -29,18 +31,25 @@ class Member(models.Model):
         max_length=128,
         blank=True,
         null=True,
-        verbose_name=_('phone_number')
+        verbose_name='numero de telefono'
     )
     member_number = models.SmallIntegerField(
         db_index=True,
-        verbose_name=_('member_number'),
+        verbose_name='numero de socio',
     )
 
-    bedrooms = models.SmallIntegerField(default=2, validators=[MinValueValidator(2), MaxValueValidator(4)])
+    bedrooms = models.SmallIntegerField(
+        default=2,
+        validators=[MinValueValidator(2), MaxValueValidator(4)],
+        verbose_name='num dormitorios',
+    )
+
+
+    history = HistoricalRecords()
 
     class Meta:
-        verbose_name = _('Member')
-        verbose_name_plural = _('Members')
+        verbose_name = 'Socio'
+        verbose_name_plural = 'Socios'
 
 
     def __str__(self):
@@ -68,21 +77,23 @@ class Debt(models.Model):
     type = models.CharField(
         max_length=256,
         choices=DEBT_TYPES,
-        verbose_name=_('type'),
+        verbose_name='tipo',
     )
 
     created_at = models.DateTimeField(
         auto_now_add=True,
-        verbose_name=_('created_at'),
+        verbose_name='fecha creación',
     )
 
     ammount = models.FloatField(
-        verbose_name=_('ammount'),
+        verbose_name='monto',
     )
 
     description = models.TextField(
-        verbose_name=_('description'),
+        verbose_name='descripción',
         null=True,
         blank=True,
     )
+
+    history = HistoricalRecords()
 

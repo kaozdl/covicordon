@@ -1,8 +1,13 @@
 from django.contrib import admin
+
+from simple_history.admin import SimpleHistoryAdmin
+
 from .models import Member, Debt
 
+
+
 @admin.register(Debt)
-class DebtAdmin(admin.ModelAdmin):
+class DebtAdmin(SimpleHistoryAdmin):
     list_display = [
         'member',
         'type',
