@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from simple_history.admin import SimpleHistoryAdmin
 
-from .models import Payment, Account
+from .models import Payment, Account, ProviderPayment
 
 @admin.register(Account)
 class AccountAdmin(SimpleHistoryAdmin):
@@ -45,3 +45,6 @@ class PaymentAdmin(SimpleHistoryAdmin):
 
     class Meta:
         model = Payment
+
+
+# @admin.register(ProviderPayments)

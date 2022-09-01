@@ -17,7 +17,7 @@ class Account(models.Model):
         verbose_name = 'cuenta'
 
 
-class ProviderPayments(models.Model):
+class ProviderPayment(models.Model):
 
     created_at = models.DateTimeField(
         auto_now_add=True,
