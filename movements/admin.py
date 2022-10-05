@@ -47,4 +47,21 @@ class PaymentAdmin(SimpleHistoryAdmin):
         model = Payment
 
 
-# @admin.register(ProviderPayments)
+@admin.register(ProviderPayment)
+class ProviderPaymentAdmin(SimpleHistoryAdmin):
+
+    fields = (
+        'created_at',
+        'currency',
+        'ammount',
+        'description',
+        'provider',
+    )
+
+    list_display = (
+        'provider',
+        'ammount',
+        'currency',
+        'created_at',
+    )
+    readonly_fields = ('created_at',)

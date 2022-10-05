@@ -30,7 +30,17 @@ class ProviderPayment(models.Model):
         verbose_name='moneda',
         max_length=128
     )
+    description = models.TextField(
+        verbose_name='descripción',
+    )
+    provider = models.CharField(
+        max_length=128,
+        verbose_name='proveedor',
+    )
 
+    class Meta:
+        verbose_name = 'Pago Proveedor'
+        verbose_name_plural = 'Pagos a proveedores'
 
 
 class Payment(models.Model):

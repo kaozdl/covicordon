@@ -97,3 +97,8 @@ class Debt(models.Model):
 
     history = HistoricalRecords()
 
+    def __str__(self):
+        return f'{self.member.first_name} {self.member.first_surname} {self.ammount}'
+
+    class Meta:
+        verbose_name = 'Deuda'
