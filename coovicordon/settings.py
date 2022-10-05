@@ -98,9 +98,8 @@ DATABASES = {
 PRODUCTION = os.environ.get('PRODUCTION', False)
 if PRODUCTION:
     DATABASE_URL = os.environ.get('DATABASE_URL')
-    DATABASES['default'] = dj_database_url.config(DATABASE_URL)
+    DATABASES['default'] = dj_database_url.parse(DATABASE_URL)
     DATABASES['default']['ATOMIC_REQUESTS'] = True
-    DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql'
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
