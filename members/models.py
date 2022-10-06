@@ -43,6 +43,9 @@ class Member(models.Model):
         validators=[MinValueValidator(2), MaxValueValidator(4)],
         verbose_name='num dormitorios',
     )
+    apartment_number = models.SmallIntegerField(
+        verbose_name='numero de unidad',
+    )
 
 
     history = HistoricalRecords()
