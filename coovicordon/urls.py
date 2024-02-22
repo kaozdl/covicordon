@@ -15,22 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from movements import views as movement_views
 from members import views as member_views
 
 urlpatterns = [
     path(
         'admin/',
         admin.site.urls,
-    ),
-    path(
-        'upload-payment/',
-        movement_views.PaymentUploadView.as_view(template_name='upload_payment.html'),
-    ),
-    path(
-        'success-payment/<int:payment_id>',
-        movement_views.success_payment,
-        name="success_payment",
     ),
     path(
         'member-status/<int:member_id>',

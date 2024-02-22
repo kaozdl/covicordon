@@ -3,7 +3,7 @@ from django.forms.models import inlineformset_factory
 
 from simple_history.admin import SimpleHistoryAdmin
 
-from .models import Member, Debt, DebtLine, Config
+from .models import Member, Debt, DebtLine, Config, Payment
 from members.constants import gen_cuota_social
 
 @admin.action(description='generar deuda para socios seleccionados')
@@ -29,6 +29,17 @@ def generate_debt(modeladmin, request, queryset):
         )
         for debt in [cuota_social, gastos_comunes]:
             debt.save()
+
+
+@admin.register(Payment)
+class PaymentAdmin(SimpleHistoryAdmin):
+
+    list_display = [
+        "deposited_at",
+        "member",
+        "ammount",
+        "verified",
+    ]
 
 
 @admin.register(Member)

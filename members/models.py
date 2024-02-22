@@ -57,6 +57,8 @@ class Debt(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    history = HistoricalRecords()
+
     @property
     def total(self):
         total = 0
@@ -125,6 +127,71 @@ class DebtLine(models.Model):
         verbose_name = 'Item deuda'
         verbose_name_plural = 'Items deuda'
 
+
+class Payment(models.Model):
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='fecha de creacion',
+    )
+
+    deposited_at = models.DateField(
+        null=True,
+        blank=True,
+        verbose_name='fecha de depósito',
+    )
+
+    verified = models.BooleanField(
+        default=False,
+        blank=True,
+        verbose_name='verificado'
+    )
+
+    member = models.ForeignKey(
+        Member,
+        on_delete=models.DO_NOTHING,
+        related_name='payments',
+        null=True,
+        blank=True,
+    )
+
+    ammount = models.DecimalField(
+        verbose_name='monto',
+        max_digits=10,
+        decimal_places=2,
+    )
+
+    attachment = models.FileField(
+        verbose_name='adjunto',
+        blank=True,
+        null=True,
+    )
+
+    reference = models.CharField(
+        max_length=128,
+        verbose_name='num referencia'
+    )
+
+    notes = models.TextField(
+        null=True,
+        blank=True,
+        verbose_name='notas',
+    )
+
+    debt = models.ForeignKey(
+        Debt,
+        on_delete=models.DO_NOTHING,
+        related_name='payments',
+        null=True,
+        blank=True,
+        verbose_name="deuda",
+    )
+
+    history = HistoricalRecords()
+
+    class Meta:
+        verbose_name='Pago socio'
+        verbose_name_plural='Pagos socio'
 
 
 
