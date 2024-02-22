@@ -2,7 +2,7 @@ import csv
 
 from members.models import Member
 
-socios = csv.DictReader(open('socios.csv'))
+socios = csv.DictReader(open("socios.csv"))
 socios_list = []
 
 for row in socios:

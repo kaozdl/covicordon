@@ -17,109 +17,374 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Config',
+            name="Config",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('ur', models.DecimalField(decimal_places=2, default=1621, max_digits=10, verbose_name='Valor unidad reajustable')),
-                ('gc', models.DecimalField(decimal_places=2, default=3500, max_digits=10, verbose_name='Valor gastos comunes')),
-                ('bedroom_price_ur', models.DecimalField(decimal_places=2, default=2.96, max_digits=10, verbose_name='Precio dormitorio en UR')),
-                ('maintainance_fund', models.DecimalField(decimal_places=2, default=0.42, max_digits=10, verbose_name='Fondo de mantenimiento')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "ur",
+                    models.DecimalField(
+                        decimal_places=2,
+                        default=1621,
+                        max_digits=10,
+                        verbose_name="Valor unidad reajustable",
+                    ),
+                ),
+                (
+                    "gc",
+                    models.DecimalField(
+                        decimal_places=2,
+                        default=3500,
+                        max_digits=10,
+                        verbose_name="Valor gastos comunes",
+                    ),
+                ),
+                (
+                    "bedroom_price_ur",
+                    models.DecimalField(
+                        decimal_places=2,
+                        default=2.96,
+                        max_digits=10,
+                        verbose_name="Precio dormitorio en UR",
+                    ),
+                ),
+                (
+                    "maintainance_fund",
+                    models.DecimalField(
+                        decimal_places=2,
+                        default=0.42,
+                        max_digits=10,
+                        verbose_name="Fondo de mantenimiento",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Debt',
+            name="Debt",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
             ],
             options={
-                'verbose_name': 'Deuda',
+                "verbose_name": "Deuda",
             },
         ),
         migrations.CreateModel(
-            name='Member',
+            name="Member",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('first_name', models.CharField(max_length=128, verbose_name='Nombre')),
-                ('last_name', models.CharField(max_length=128, verbose_name='Apellido')),
-                ('phone_number', models.CharField(blank=True, max_length=128, null=True, verbose_name='numero de telefono')),
-                ('member_number', models.SmallIntegerField(db_index=True, verbose_name='numero de socio')),
-                ('bedrooms', models.SmallIntegerField(default=2, validators=[django.core.validators.MinValueValidator(2), django.core.validators.MaxValueValidator(4)], verbose_name='num dormitorios')),
-                ('apartment_number', models.SmallIntegerField(blank=True, null=True, verbose_name='numero de unidad')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("first_name", models.CharField(max_length=128, verbose_name="Nombre")),
+                (
+                    "last_name",
+                    models.CharField(max_length=128, verbose_name="Apellido"),
+                ),
+                (
+                    "phone_number",
+                    models.CharField(
+                        blank=True,
+                        max_length=128,
+                        null=True,
+                        verbose_name="numero de telefono",
+                    ),
+                ),
+                (
+                    "member_number",
+                    models.SmallIntegerField(
+                        db_index=True, verbose_name="numero de socio"
+                    ),
+                ),
+                (
+                    "bedrooms",
+                    models.SmallIntegerField(
+                        default=2,
+                        validators=[
+                            django.core.validators.MinValueValidator(2),
+                            django.core.validators.MaxValueValidator(4),
+                        ],
+                        verbose_name="num dormitorios",
+                    ),
+                ),
+                (
+                    "apartment_number",
+                    models.SmallIntegerField(
+                        blank=True, null=True, verbose_name="numero de unidad"
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Socio',
-                'verbose_name_plural': 'Socios',
+                "verbose_name": "Socio",
+                "verbose_name_plural": "Socios",
             },
         ),
         migrations.CreateModel(
-            name='HistoricalMember',
+            name="HistoricalMember",
             fields=[
-                ('id', models.BigIntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('first_name', models.CharField(max_length=128, verbose_name='Nombre')),
-                ('last_name', models.CharField(max_length=128, verbose_name='Apellido')),
-                ('phone_number', models.CharField(blank=True, max_length=128, null=True, verbose_name='numero de telefono')),
-                ('member_number', models.SmallIntegerField(db_index=True, verbose_name='numero de socio')),
-                ('bedrooms', models.SmallIntegerField(default=2, validators=[django.core.validators.MinValueValidator(2), django.core.validators.MaxValueValidator(4)], verbose_name='num dormitorios')),
-                ('apartment_number', models.SmallIntegerField(blank=True, null=True, verbose_name='numero de unidad')),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigIntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                ("first_name", models.CharField(max_length=128, verbose_name="Nombre")),
+                (
+                    "last_name",
+                    models.CharField(max_length=128, verbose_name="Apellido"),
+                ),
+                (
+                    "phone_number",
+                    models.CharField(
+                        blank=True,
+                        max_length=128,
+                        null=True,
+                        verbose_name="numero de telefono",
+                    ),
+                ),
+                (
+                    "member_number",
+                    models.SmallIntegerField(
+                        db_index=True, verbose_name="numero de socio"
+                    ),
+                ),
+                (
+                    "bedrooms",
+                    models.SmallIntegerField(
+                        default=2,
+                        validators=[
+                            django.core.validators.MinValueValidator(2),
+                            django.core.validators.MaxValueValidator(4),
+                        ],
+                        verbose_name="num dormitorios",
+                    ),
+                ),
+                (
+                    "apartment_number",
+                    models.SmallIntegerField(
+                        blank=True, null=True, verbose_name="numero de unidad"
+                    ),
+                ),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'historical Socio',
-                'verbose_name_plural': 'historical Socios',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "historical Socio",
+                "verbose_name_plural": "historical Socios",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
             },
             bases=(simple_history.models.HistoricalChanges, models.Model),
         ),
         migrations.CreateModel(
-            name='HistoricalDebtLine',
+            name="HistoricalDebtLine",
             fields=[
-                ('id', models.BigIntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('type', models.CharField(choices=[('cuota_social', 'Cuota social'), ('gastos_comunes', 'Gastos comunes'), ('fondo_socorro', 'Fondo socorro'), ('atraso_cuota', 'Atraso cuota'), ('falta_asamblea', 'Falta asamblea'), ('falta_obra', 'Falta obra'), ('convenio_social', 'Convenio social'), ('prestamo_inacoop', 'Préstamo inacoop'), ('salon_comunal', 'Salon comunal'), ('salon_otros', 'Salon otros'), ('saldo_anterior', 'Saldo anterior'), ('otros', 'Otros')], max_length=256, verbose_name='tipo')),
-                ('created_at', models.DateTimeField(blank=True, editable=False, verbose_name='fecha creación')),
-                ('ammount', models.DecimalField(decimal_places=2, max_digits=10, verbose_name='monto')),
-                ('description', models.TextField(blank=True, null=True, verbose_name='descripción')),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('debt', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='members.debt')),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
-                ('member', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='members.member')),
+                (
+                    "id",
+                    models.BigIntegerField(
+                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                    ),
+                ),
+                (
+                    "type",
+                    models.CharField(
+                        choices=[
+                            ("cuota_social", "Cuota social"),
+                            ("gastos_comunes", "Gastos comunes"),
+                            ("fondo_socorro", "Fondo socorro"),
+                            ("atraso_cuota", "Atraso cuota"),
+                            ("falta_asamblea", "Falta asamblea"),
+                            ("falta_obra", "Falta obra"),
+                            ("convenio_social", "Convenio social"),
+                            ("prestamo_inacoop", "Préstamo inacoop"),
+                            ("salon_comunal", "Salon comunal"),
+                            ("salon_otros", "Salon otros"),
+                            ("saldo_anterior", "Saldo anterior"),
+                            ("otros", "Otros"),
+                        ],
+                        max_length=256,
+                        verbose_name="tipo",
+                    ),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(
+                        blank=True, editable=False, verbose_name="fecha creación"
+                    ),
+                ),
+                (
+                    "ammount",
+                    models.DecimalField(
+                        decimal_places=2, max_digits=10, verbose_name="monto"
+                    ),
+                ),
+                (
+                    "description",
+                    models.TextField(blank=True, null=True, verbose_name="descripción"),
+                ),
+                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                ("history_date", models.DateTimeField(db_index=True)),
+                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_type",
+                    models.CharField(
+                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "debt",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="members.debt",
+                    ),
+                ),
+                (
+                    "history_user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "member",
+                    models.ForeignKey(
+                        blank=True,
+                        db_constraint=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="+",
+                        to="members.member",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'historical Item deuda',
-                'verbose_name_plural': 'historical Items deuda',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
+                "verbose_name": "historical Item deuda",
+                "verbose_name_plural": "historical Items deuda",
+                "ordering": ("-history_date", "-history_id"),
+                "get_latest_by": ("history_date", "history_id"),
             },
             bases=(simple_history.models.HistoricalChanges, models.Model),
         ),
         migrations.CreateModel(
-            name='DebtLine',
+            name="DebtLine",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('type', models.CharField(choices=[('cuota_social', 'Cuota social'), ('gastos_comunes', 'Gastos comunes'), ('fondo_socorro', 'Fondo socorro'), ('atraso_cuota', 'Atraso cuota'), ('falta_asamblea', 'Falta asamblea'), ('falta_obra', 'Falta obra'), ('convenio_social', 'Convenio social'), ('prestamo_inacoop', 'Préstamo inacoop'), ('salon_comunal', 'Salon comunal'), ('salon_otros', 'Salon otros'), ('saldo_anterior', 'Saldo anterior'), ('otros', 'Otros')], max_length=256, verbose_name='tipo')),
-                ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='fecha creación')),
-                ('ammount', models.DecimalField(decimal_places=2, max_digits=10, verbose_name='monto')),
-                ('description', models.TextField(blank=True, null=True, verbose_name='descripción')),
-                ('debt', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, related_name='lines', to='members.debt')),
-                ('member', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='members.member')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "type",
+                    models.CharField(
+                        choices=[
+                            ("cuota_social", "Cuota social"),
+                            ("gastos_comunes", "Gastos comunes"),
+                            ("fondo_socorro", "Fondo socorro"),
+                            ("atraso_cuota", "Atraso cuota"),
+                            ("falta_asamblea", "Falta asamblea"),
+                            ("falta_obra", "Falta obra"),
+                            ("convenio_social", "Convenio social"),
+                            ("prestamo_inacoop", "Préstamo inacoop"),
+                            ("salon_comunal", "Salon comunal"),
+                            ("salon_otros", "Salon otros"),
+                            ("saldo_anterior", "Saldo anterior"),
+                            ("otros", "Otros"),
+                        ],
+                        max_length=256,
+                        verbose_name="tipo",
+                    ),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(
+                        auto_now_add=True, verbose_name="fecha creación"
+                    ),
+                ),
+                (
+                    "ammount",
+                    models.DecimalField(
+                        decimal_places=2, max_digits=10, verbose_name="monto"
+                    ),
+                ),
+                (
+                    "description",
+                    models.TextField(blank=True, null=True, verbose_name="descripción"),
+                ),
+                (
+                    "debt",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="lines",
+                        to="members.debt",
+                    ),
+                ),
+                (
+                    "member",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        to="members.member",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Item deuda',
-                'verbose_name_plural': 'Items deuda',
+                "verbose_name": "Item deuda",
+                "verbose_name_plural": "Items deuda",
             },
         ),
         migrations.AddField(
-            model_name='debt',
-            name='member',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='members.member'),
+            model_name="debt",
+            name="member",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.DO_NOTHING, to="members.member"
+            ),
         ),
     ]

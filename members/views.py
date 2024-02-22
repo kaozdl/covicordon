@@ -7,4 +7,3 @@ def member_status(request, member_id):
 
 def member_payments(request, member_id):
     pass
-

@@ -3,8 +3,10 @@ from django import forms
 from .models import Payment
 from members.models import Member
 
+
 class DateInput(forms.DateInput):
-    input_type = 'date'
+    input_type = "date"
+
 
 class PaymentForm(forms.ModelForm):
 
@@ -16,10 +18,4 @@ class PaymentForm(forms.ModelForm):
 
     class Meta:
         model = Payment
-        fields = (
-            'deposited_at',
-            'member',
-            'attachment',
-            'ammount',
-            'reference'
-        )
+        fields = ("deposited_at", "member", "attachment", "ammount", "reference")
