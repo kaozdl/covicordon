@@ -27,8 +27,8 @@ SECRET_KEY = 'django-insecure-vkt9%eu(+wq*&a8eqkz6p1ml6)74ny@(ucbxj)a*-)%4v&7+rv
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['covicordon-admin.herokuapp.com']
-
+ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGINS = ['https://covicordon.fly.dev', 'http://localhost:8000']
 
 # Application definition
 
@@ -99,7 +99,7 @@ DATABASES = {
 
 PRODUCTION = os.environ.get('PRODUCTION', False)
 if PRODUCTION:
-    DATABASE_URL = os.environ.get('DATABASE_URL')
+    DATABASE_URL="postgres://covicordon:WA2ZKR5ZFVtVnGF@coovicordon-db.flycast:5432/covicordon?sslmode=disable"
     DATABASES['default'] = dj_database_url.parse(DATABASE_URL)
     DATABASES['default']['ATOMIC_REQUESTS'] = True
 # Password validation

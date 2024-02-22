@@ -13,12 +13,7 @@ def generar_deudas():
             type='gastos_comunes',
             ammount=VALOR_GC,
         )
-        inacoop = Debt(
-            member=member,
-            type='prestamo_inacoop',
-            ammount=VALOR_INACOOP,
-        )
-        for debt in [cuota_social, gastos_comunes, inacoop]:
+        for debt in [cuota_social, gastos_comunes]:
             debt.save()
 
 
