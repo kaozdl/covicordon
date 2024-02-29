@@ -18,7 +18,10 @@ class Member(models.Model):
     )
 
     phone_number = models.CharField(
-        max_length=128, blank=True, null=True, verbose_name="numero de telefono"
+        max_length=128,
+        blank=True,
+        null=True,
+        verbose_name="numero de telefono",
     )
 
     member_number = models.SmallIntegerField(
@@ -39,6 +42,20 @@ class Member(models.Model):
 
     history = HistoricalRecords()
 
+    @property
+    def total_paid(self):
+        total_paid = 0
+        for payment in self.payments.all():
+            total_paid += payment.ammount
+        return total_paid
+
+    @property
+    def total_debt(self):
+        total_debt = 0
+        for debt in self.debts.all():
+            total_debt += debt.total
+        return total_debt
+
     class Meta:
         verbose_name = "Socio"
         verbose_name_plural = "Socios"
@@ -47,8 +64,29 @@ class Member(models.Model):
         return f"{self.member_number} {self.first_name} {self.last_name}"
 
 
+class DebtAmmend(models.Model):
+    name = models.CharField(max_length=128, verbose_name="Motivo")
+    member = models.ForeignKey(
+        Member, related_name="convenios", on_delete=models.CASCADE
+    )
+    ammount = models.DecimalField(max_digits=10, decimal_places=2)
+    total_payments = models.SmallIntegerField(verbose_name="Total de cuotas")
+    due_payments = models.SmallIntegerField(verbose_name="Cuotas cobradas")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    history = HistoricalRecords()
+
+    @property
+    def done(self):
+        return (self.total_payments - self.due_payments) == 0
+
+    class Meta:
+        verbose_name = "Convenio"
+
+
 class Debt(models.Model):
-    member = models.ForeignKey(Member, on_delete=models.DO_NOTHING)
+    member = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="debts")
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -70,10 +108,13 @@ class Debt(models.Model):
 
 
 class DebtLine(models.Model):
-    member = models.ForeignKey(Member, on_delete=models.DO_NOTHING)
+    member = models.ForeignKey(
+        Member,
+        on_delete=models.CASCADE,
+    )
     debt = models.ForeignKey(
         Debt,
-        on_delete=models.DO_NOTHING,
+        on_delete=models.CASCADE,
         related_name="lines",
     )
 
@@ -125,7 +166,31 @@ class DebtLine(models.Model):
         verbose_name_plural = "Items deuda"
 
 
+class BankSync(models.Model):
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    history = HistoricalRecords()
+
+    def __str__(self):
+        c = self.created_at
+        return f"Carga realizada: {c.day}/{c.month}/{c.year}"
+
+    class Meta:
+        verbose_name = "Carga banco"
+        verbose_name_plural = "Cargas banco"
+
+
 class Payment(models.Model):
+
+    bank_sync = models.ForeignKey(
+        BankSync,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        related_name="payments",
+    )
 
     created_at = models.DateTimeField(
         auto_now_add=True,
@@ -142,7 +207,7 @@ class Payment(models.Model):
 
     member = models.ForeignKey(
         Member,
-        on_delete=models.DO_NOTHING,
+        on_delete=models.CASCADE,
         related_name="payments",
         null=True,
         blank=True,
@@ -170,7 +235,7 @@ class Payment(models.Model):
 
     debt = models.ForeignKey(
         Debt,
-        on_delete=models.DO_NOTHING,
+        on_delete=models.CASCADE,
         related_name="payments",
         null=True,
         blank=True,

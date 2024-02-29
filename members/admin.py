@@ -1,9 +1,23 @@
+from decimal import Decimal
+
+from django.http import HttpResponse
+from django.shortcuts import render
 from django.contrib import admin
-from django.forms.models import inlineformset_factory
 
 from simple_history.admin import SimpleHistoryAdmin
 
-from .models import Member, Debt, DebtLine, Config, Payment
+from .models import (
+    Member,
+    Debt,
+    DebtLine,
+    DebtAmmend,
+    Config,
+    Payment,
+    BankSync,
+)
+
+from .forms import BankSyncForm
+
 from members.constants import gen_cuota_social
 
 
@@ -14,14 +28,29 @@ def generate_debt(modeladmin, request, queryset):
 
     for member in queryset:
 
+        remnant_ammount = member.total_debt - member.total_paid
+        if remnant_ammount > 0:
+            remnant_ammount *= Decimal(1.1)
+
         month_debt = Debt(member=member)
         month_debt.save()
+        # Saldos anteriores
+        if remnant_ammount != 0:
+            remnants = DebtLine(
+                member=member,
+                debt=month_debt,
+                type="saldo_anterior",
+                ammount=remnant_ammount,
+            )
+            remnants.save()
+        # Cuota social
         cuota_social = DebtLine(
             member=member,
             type="cuota_social",
             ammount=gen_cuota_social(member),
             debt=month_debt,
         )
+        # Gastos comunes
         gastos_comunes = DebtLine(
             member=member,
             type="gastos_comunes",
@@ -30,6 +59,35 @@ def generate_debt(modeladmin, request, queryset):
         )
         for debt in [cuota_social, gastos_comunes]:
             debt.save()
+        # Convenios activos si tiene
+        for debt_ammend in [da for da in member.convenios.all() if not da.done]:
+            debt = DebtLine(
+                member=member,
+                type="convenio_social",
+                ammount=debt_ammend.ammount,
+                description=debt_ammend.name,
+                debt=month_debt,
+            )
+            debt.save()
+            debt_ammend.due_payments += 1
+            debt_ammend.save()
+
+
+@admin.register(DebtAmmend)
+class DebtAmmendAdmin(admin.ModelAdmin):
+    list_display = [
+        "member",
+        "ammount",
+        "total_payments",
+        "due_payments",
+    ]
+
+
+@admin.register(BankSync)
+class BankSyncAdmin(admin.ModelAdmin):
+
+    list_display = ["created_at"]
+    form = BankSyncForm
 
 
 @admin.register(Payment)
