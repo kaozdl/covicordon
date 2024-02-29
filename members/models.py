@@ -139,6 +139,24 @@ class DebtLine(models.Model):
         verbose_name="tipo",
     )
 
+    @property
+    def type_display(self):
+        types = {
+            "cuota_social": "Cuota social",
+            "gastos_comunes": "Gastos comunes",
+            "fondo_socorro": "Fondo socorro",
+            "atraso_cuota": "Atraso cuota",
+            "falta_asamblea": "Falta asamblea",
+            "falta_obra": "Falta obra",
+            "convenio_social": "Convenio social",
+            "prestamo_inacoop": "Préstamo inacoop",
+            "salon_comunal": "Salón cominal",
+            "salon_otros": "Salon otros",
+            "saldo_anterior": "Saldo anterior",
+            "otros": "Otros",
+        }
+        return types[self.type]
+
     created_at = models.DateTimeField(
         auto_now_add=True,
         verbose_name="fecha creación",

@@ -81,6 +81,8 @@ class DebtAmmendAdmin(admin.ModelAdmin):
         "total_payments",
         "due_payments",
     ]
+    autocomplete_fields = ["member"]
+    search_fields = ["member"]
 
 
 @admin.register(BankSync)
@@ -99,6 +101,8 @@ class PaymentAdmin(SimpleHistoryAdmin):
         "ammount",
         "verified",
     ]
+    autocomplete_fields = ["member"]
+    search_fields = ["member"]
 
 
 @admin.register(Member)
@@ -108,6 +112,8 @@ class MemberAdmin(SimpleHistoryAdmin):
         "first_name",
         "last_name",
     ]
+
+    search_fields = ["member_number", "first_name", "last_name"]
 
     actions = [generate_debt]
 
@@ -135,6 +141,8 @@ class DebtLineAdmin(SimpleHistoryAdmin):
 
 class DebtLineInline(admin.StackedInline):
     model = DebtLine
+    search_fields = ["member"]
+    autocomplete_fields = ["member"]
     extra = 0
 
 
@@ -144,7 +152,8 @@ class DebtAdmin(SimpleHistoryAdmin):
         "member",
         "total",
     ]
-
+    search_fields = ["member"]
+    autocomplete_fields = ["member"]
     inlines = [DebtLineInline]
 
 

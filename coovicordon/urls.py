@@ -15,17 +15,12 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
-from members import views as member_views
+from django.urls import path, include
 
 urlpatterns = [
     path(
         "admin/",
         admin.site.urls,
     ),
-    path(
-        "member-status/<int:member_id>",
-        member_views.member_status,
-        name="member_status",
-    ),
+    path("members/", include("members.urls")),
 ]
