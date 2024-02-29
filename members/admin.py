@@ -148,4 +148,8 @@ class DebtAdmin(SimpleHistoryAdmin):
     inlines = [DebtLineInline]
 
 
+admin.site.index_title = "Bienvenido a la administracion de Covicordon"
+admin.site.site_header = "Administracion de Covicordon"
+admin.site.site_title = "Administracion de Covicordon"
+
 admin.site.register(Config)
